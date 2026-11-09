@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block titulo %}Motos{% endblock %}
+
+{% block contenido %}
+    <h1>Motos</h1>
+
+    <p><a href="{{ url_for('nuevamoto') }}">+ Nueva moto</a></p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Patente</th>
+                <th>Cliente</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in motos %}
+            <tr>
+                <td>{{ m.idmoto }}</td>
+                <td>{{ m.marca }}</td>
+                <td>{{ m.modelo }}</td>
+                <td>{{ m.patente }}</td>
+                <td>{{ m.nombre }} {{ m.apellido }}</td>
+                <td>
+                    <a href="{{ url_for('editarmoto', idmoto=m.idmoto) }}">Editar</a>
+                    <a href="{{ url_for('eliminarmoto', idmoto=m.idmoto) }}">Eliminar</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">Todavía no hay motos registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

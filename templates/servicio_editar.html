@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block titulo %}Editar servicio{% endblock %}
+
+{% block contenido %}
+    <h1>Editar servicio</h1>
+
+    <form method="POST" action="{{ url_for('editarservicio', idservicio=servicio.idservicio) }}">
+        <p>
+            <select name="idmoto" required>
+                <option value="">Seleccioná una moto</option>
+                {% for m in motos %}
+                <option value="{{ m.idmoto }}" {% if servicio.idmoto|string == m.idmoto|string %}selected{% endif %}>
+                    {{ m.marca }} {{ m.modelo }} - {{ m.patente }} ({{ m.apellido }}, {{ m.nombre }})
+                </option>
+                {% endfor %}
+            </select>
+        </p>
+
+        <p><textarea name="descripcion" placeholder="Descripción del servicio" rows="3" cols="40" required>{{ servicio.descripcion }}</textarea></p>
+        <p><input type="number" name="costo" placeholder="Costo" step="0.01" min="0" value="{{ servicio.costo }}" required></p>
+        <p><input type="date" name="fecha" value="{{ servicio.fecha }}"></p>
+
+        <button type="submit">Guardar cambios</button>
+        <a href="{{ url_for('listarservicios') }}">Cancelar</a>
+    </form>
+{% endblock %}

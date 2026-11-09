@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block titulo %}Nuevo cliente{% endblock %}
+
+{% block contenido %}
+    <h1>Nuevo cliente</h1>
+
+    <form method="POST" action="{{ url_for('nuevocliente') }}">
+        <p><input type="text" name="nombre" placeholder="Nombre" value="{{ datos.get('nombre', '') }}" required></p>
+        <p><input type="text" name="apellido" placeholder="Apellido" value="{{ datos.get('apellido', '') }}" required></p>
+        <p><input type="text" name="telefono" placeholder="Teléfono" value="{{ datos.get('telefono', '') }}" required></p>
+        <p><input type="text" name="direccion" placeholder="Dirección" value="{{ datos.get('direccion', '') }}"></p>
+
+        <button type="submit">Guardar</button>
+        <a href="{{ url_for('listarclientes') }}">Cancelar</a>
+    </form>
+{% endblock %}

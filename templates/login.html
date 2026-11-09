@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar sesión</title>
+</head>
+<body>
+
+    <h1>Taller de Motos</h1>
+    <h2>Iniciar sesión</h2>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% for categoria, mensaje in mensajes %}
+            <p class="{{ categoria }}"><strong>{{ mensaje }}</strong></p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('login') }}" autocomplete="off">
+        <p><input type="text" name="usuario" placeholder="Usuario" autocomplete="off" required autofocus></p>
+        <p><input type="password" name="contrasena" placeholder="Contraseña" autocomplete="new-password" required></p>
+        <button type="submit">Ingresar</button>
+    </form>
+
+
+    <script>
+        // Al volver con el botón Atrás, vacía los campos y recarga si era una copia guardada
+        window.addEventListener("pageshow", function (e) {
+            document.querySelector("form").reset();
+            if (e.persisted) { location.reload(); }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block titulo %}Eliminar cliente{% endblock %}
+
+{% block contenido %}
+    <h1>Eliminar cliente</h1>
+
+    <p>¿Seguro que querés eliminar a este cliente?</p>
+    <ul>
+        <li><strong>Nombre:</strong> {{ cliente.nombre }} {{ cliente.apellido }}</li>
+        <li><strong>Teléfono:</strong> {{ cliente.telefono }}</li>
+        <li><strong>Dirección:</strong> {{ cliente.direccion }}</li>
+    </ul>
+
+    <form method="POST" action="{{ url_for('eliminarcliente', idcliente=cliente.id) }}">
+        <button type="submit">Sí, eliminar</button>
+        <a href="{{ url_for('listarclientes') }}">Cancelar</a>
+    </form>
+{% endblock %}

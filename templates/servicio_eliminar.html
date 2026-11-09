@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block titulo %}Eliminar servicio{% endblock %}
+
+{% block contenido %}
+    <h1>Eliminar servicio</h1>
+
+    <p>¿Seguro que querés eliminar este servicio?</p>
+    <ul>
+        <li><strong>Fecha:</strong> {{ servicio.fecha }}</li>
+        <li><strong>Moto:</strong> {{ servicio.marca }} {{ servicio.modelo }} ({{ servicio.patente }})</li>
+        <li><strong>Cliente:</strong> {{ servicio.nombre }} {{ servicio.apellido }}</li>
+        <li><strong>Descripción:</strong> {{ servicio.descripcion }}</li>
+        <li><strong>Costo:</strong> $ {{ "%.2f"|format(servicio.costo) }}</li>
+    </ul>
+
+    <form method="POST" action="{{ url_for('eliminarservicio', idservicio=servicio.idservicio) }}">
+        <button type="submit">Sí, eliminar</button>
+        <a href="{{ url_for('listarservicios') }}">Cancelar</a>
+    </form>
+{% endblock %}

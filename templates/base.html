@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block titulo %}Taller de Motos{% endblock %}</title>
+</head>
+<body>
+
+    <nav>
+        <a href="{{ url_for('listarclientes') }}">Clientes</a> 
+        <a href="{{ url_for('listarmotos') }}">Motos</a> 
+        <a href="{{ url_for('listarservicios') }}">Servicios</a>
+        Usuario: <strong>{{ session['usuario'] }}</strong>
+        <form method="POST" action="{{ url_for('logout') }}" style="display:inline;">
+            <button type="submit">Cerrar sesión</button>
+        </form>
+    </nav>
+    <hr>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% for categoria, mensaje in mensajes %}
+            <p class="{{ categoria }}"><strong>{{ mensaje }}</strong></p>
+        {% endfor %}
+    {% endwith %}
+
+    {% block contenido %}{% endblock %}
+        <script>
+        // Si el navegador muestra una copia guardada (botón Atrás), recarga para que el servidor decida
+        window.addEventListener("pageshow", function (e) {
+            if (e.persisted) { location.reload(); }
+        });
+    </script>
+</body>
+
+</body>
+</html>

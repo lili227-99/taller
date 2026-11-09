@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block titulo %}Eliminar moto{% endblock %}
+
+{% block contenido %}
+    <h1>Eliminar moto</h1>
+
+    <p>¿Seguro que querés eliminar esta moto?</p>
+    <ul>
+        <li><strong>Marca:</strong> {{ moto.marca }}</li>
+        <li><strong>Modelo:</strong> {{ moto.modelo }}</li>
+        <li><strong>Patente:</strong> {{ moto.patente }}</li>
+        <li><strong>Cliente:</strong> {{ moto.nombre }} {{ moto.apellido }}</li>
+    </ul>
+
+    <form method="POST" action="{{ url_for('eliminarmoto', idmoto=moto.idmoto) }}">
+        <button type="submit">Sí, eliminar</button>
+        <a href="{{ url_for('listarmotos') }}">Cancelar</a>
+    </form>
+{% endblock %}

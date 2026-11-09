@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block titulo %}Nuevo servicio{% endblock %}
+
+{% block contenido %}
+    <h1>Nuevo servicio</h1>
+
+    <form method="POST" action="{{ url_for('nuevoservicio') }}">
+        <p>
+            <select name="idmoto" required>
+                <option value="">Seleccioná una moto</option>
+                {% for m in motos %}
+                <option value="{{ m.idmoto }}" {% if datos.get('idmoto')|string == m.idmoto|string %}selected{% endif %}>
+                    {{ m.marca }} {{ m.modelo }} - {{ m.patente }} ({{ m.apellido }}, {{ m.nombre }})
+                </option>
+                {% endfor %}
+            </select>
+        </p>
+
+        <p><textarea name="descripcion" placeholder="Descripción del servicio" rows="3" cols="40" required>{{ datos.get('descripcion', '') }}</textarea></p>
+        <p><input type="number" name="costo" placeholder="Costo" step="0.01" min="0" value="{{ datos.get('costo', '') }}" required></p>
+        <p><input type="date" name="fecha" value="{{ datos.get('fecha', hoy) }}"></p>
+
+        <button type="submit">Guardar</button>
+        <a href="{{ url_for('listarservicios') }}">Cancelar</a>
+    </form>
+{% endblock %}

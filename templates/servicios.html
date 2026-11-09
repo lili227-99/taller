@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block titulo %}Servicios{% endblock %}
+
+{% block contenido %}
+    <h1>Servicios</h1>
+
+    <p><a href="{{ url_for('nuevoservicio') }}">+ Nuevo servicio</a></p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Moto</th>
+                <th>Cliente</th>
+                <th>Descripción</th>
+                <th>Costo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in servicios %}
+            <tr>
+                <td>{{ s.idservicio }}</td>
+                <td>{{ s.fecha }}</td>
+                <td>{{ s.marca }} {{ s.modelo }} ({{ s.patente }})</td>
+                <td>{{ s.nombre }} {{ s.apellido }}</td>
+                <td>{{ s.descripcion }}</td>
+                <td>$ {{ "%.2f"|format(s.costo) }}</td>
+                <td>
+                    <a href="{{ url_for('editarservicio', idservicio=s.idservicio) }}">Editar</a>
+                    <a href="{{ url_for('eliminarservicio', idservicio=s.idservicio) }}">Eliminar</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7">Todavía no hay servicios registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
