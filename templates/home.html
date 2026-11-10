@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+    <h1>Taller de Motos</h1>
+    <p>Bienvenido/a, <strong>{{ session['usuario'] }}</strong>. ¿Qué querés hacer?</p>
+
+    <div class="tarjetas">
+        <a class="tarjeta" href="{{ url_for('listarclientes') }}">
+            <span class="tarjeta-icono">👤</span>
+            <h2>Clientes</h2>
+            <p>Registrar y consultar los clientes del taller.</p>
+        </a>
+
+        <a class="tarjeta" href="{{ url_for('listarmotos') }}">
+            <span class="tarjeta-icono">🏍️</span>
+            <h2>Motos</h2>
+            <p>Registrar motos y ver su historial de servicios.</p>
+        </a>
+
+        <a class="tarjeta" href="{{ url_for('listarservicios') }}">
+            <span class="tarjeta-icono">🔧</span>
+            <h2>Servicios</h2>
+            <p>Registrar los trabajos realizados a cada moto.</p>
+        </a>
+    </div>
+{% endblock %}

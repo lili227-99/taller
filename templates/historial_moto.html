@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block titulo %}Historial de la moto{% endblock %}
+
+{% block contenido %}
+    <h1>Historial de servicios</h1>
+
+    <p>
+        <strong>Moto:</strong> {{ moto.marca }} {{ moto.modelo }} ({{ moto.patente }})<br>
+        <strong>Cliente:</strong> {{ moto.nombre }} {{ moto.apellido }}
+    </p>
+
+    <p><a href="{{ url_for('nuevoservicio') }}">+ Nuevo servicio</a></p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Descripción</th>
+                <th>Costo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in servicios %}
+            <tr>
+                <td>{{ s.fecha }}</td>
+                <td>{{ s.descripcion }}</td>
+                <td>$ {{ "%.2f"|format(s.costo) }}</td>
+                <td>
+                    <a href="{{ url_for('editarservicio', idservicio=s.idservicio) }}">Editar</a>
+                    <a href="{{ url_for('eliminarservicio', idservicio=s.idservicio) }}">Eliminar</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">Esta moto todavía no tiene servicios registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% if servicios %}
+        <tfoot>
+            <tr>
+                <td colspan="2"><strong>Total</strong></td>
+                <td colspan="2"><strong>$ {{ "%.2f"|format(total) }}</strong></td>
+            </tr>
+        </tfoot>
+        {% endif %}
+    </table>
+
+    <p><a href="{{ url_for('listarmotos') }}">← Volver a motos</a></p>
+{% endblock %}

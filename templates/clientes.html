@@ -9,6 +9,12 @@
 
     <p><a href="{{ url_for('nuevocliente') }}">+ Nuevo cliente</a></p>
 
+        <form method="GET" action="{{ url_for('listarclientes') }}">
+        <input type="text" name="q" placeholder="Buscar por nombre o apellido" value="{{ q }}">
+        <button type="submit">Buscar</button>
+        {% if q %}<a href="{{ url_for('listarclientes') }}">Quitar filtro</a>{% endif %}
+    </form>
+
     <table border="1">
         <thead>
             <tr>

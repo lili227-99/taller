@@ -1,0 +1,120 @@
+/* =========================================================
+   Estilos básicos - Taller de Motos
+   Para cambiar los colores, modificá solo estas variables.
+   ========================================================= */
+:root {
+    --color-principal: #2bc0ac;   /* botones y encabezados */
+    --color-oscuro: #2c3e50;      /* azul oscuro: menú y títulos */
+    --color-fondo: #f4f6f8;       /* gris claro: fondo de la página */
+    --color-borde: #d5dbe0;
+    --color-exito: #1e8449;
+    --color-error: #c0392b;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--color-fondo);
+    color: #333;
+    max-width: 960px;
+    margin: 0px auto;
+    padding: 20px;
+}
+
+h1, h2 { color: var(--color-oscuro); }
+
+a { color: var(--color-principal); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- Menú ---- */
+nav {
+    background: var(--color-oscuro);
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 6px;
+}
+nav a { color: #fff; margin: 0 14px; }
+nav hr { display: none; }
+body > hr { display: none; }
+
+/* ---- Mensajes (flash) ---- */
+p.exito, p.error {
+    padding: 10px 14px;
+    border-radius: 6px;
+    border-left: 5px solid;
+}
+p.exito { background: #e8f6ee; color: var(--color-exito); border-color: var(--color-exito); }
+p.error { background: #fdecea; color: var(--color-error); border-color: var(--color-error); }
+
+/* ---- Tablas ---- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+table, th, td { border: 1px solid var(--color-borde) !important; }
+th {
+    background: var(--color-oscuro);
+    color: #fff;
+    text-align: left;
+}
+th, td { padding: 8px 10px; }
+tbody tr:nth-child(even) { background: #f9fafb; }
+tfoot td { background: #eef1f4; }
+
+/* ---- Formularios ---- */
+input[type="text"], input[type="password"], input[type="number"],
+input[type="date"], select, textarea {
+    padding: 8px;
+    border: 1px solid var(--color-borde);
+    border-radius: 4px;
+    font-size: 14px;
+    max-width: 100%;
+}
+
+button {
+    background: var(--color-principal);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+button:hover { opacity: 0.9; }
+
+/* El botón "Cerrar sesión" del menú, más discreto */
+nav button { background: transparent; border: 1px solid #fff; margin-left: 8px; }
+
+/* ---- Detalles ---- */
+input[name="q"] { width: 320px; }          /* cuadro de búsqueda */
+td a { margin-right: 10px; }               /* separa Historial / Editar / Eliminar */
+
+
+/* ---- Tarjetas de la página de inicio ---- */
+.tarjetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.tarjeta {
+    flex: 1 1 220px;
+    background: #fff;
+    border: 1px solid var(--color-borde);
+    border-top: 5px solid var(--color-principal);
+    border-radius: 8px;
+    padding: 24px 20px;
+    text-align: center;
+    color: #333;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.tarjeta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    text-decoration: none;
+}
+.tarjeta-icono { font-size: 40px; }
+.tarjeta h2 { margin: 10px 0 6px; }
+.tarjeta p { margin: 0; color: #666; font-size: 14px; }

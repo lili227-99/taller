@@ -24,15 +24,14 @@ def login_required(f):
  
  
 @app.route("/")
+@login_required
 def inicio():
-    return redirect(url_for("listarclientes"))
- 
+    return render_template("home.html")
  
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if session.get("usuario"):
-        return redirect(url_for("listarclientes"))
- 
+     return redirect(url_for("inicio"))
     if request.method == "POST":
         usuario = request.form.get("usuario", "").strip()
         contrasena = request.form.get("contrasena", "")
@@ -55,8 +54,7 @@ def login():
  
         session.clear()
         session["usuario"] = fila["usuario"]
-        return redirect(url_for("listarclientes"))
- 
+        return redirect(url_for("inicio"))
     return render_template("login.html")
  
  
@@ -76,21 +74,27 @@ def sin_cache(respuesta):
     return respuesta
 
 
-
-# ==========================================================
-# RUTAS DE CLIENTES (una página por acción)
-# ==========================================================
-
 # 1. LISTADO: muestra la tabla de clientes
 @app.route("/clientes")
+@login_required
 def listarclientes():
+    q = request.args.get("q", "").strip()
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
-    cursor.execute("SELECT idcliente AS id, nombre, apellido, telefono, direccion FROM clientes")
+    if q:
+        patron = "%" + q + "%"
+        cursor.execute(
+            "SELECT idcliente AS id, nombre, apellido, telefono, direccion FROM clientes "
+            "WHERE nombre LIKE %s OR apellido LIKE %s OR CONCAT(nombre, ' ', apellido) LIKE %s",
+            (patron, patron, patron)
+        )
+    else:
+        cursor.execute("SELECT idcliente AS id, nombre, apellido, telefono, direccion FROM clientes")
     clientes = cursor.fetchall()
     cursor.close()
     conexion.close()
-    return render_template("clientes.html", clientes=clientes)
+    return render_template("clientes.html", clientes=clientes, q=q)
+
 
 
 # 2. NUEVO: GET muestra el formulario, POST guarda
@@ -243,21 +247,32 @@ def obtener_clientes():
     return clientes
 
 
-# 1. LISTADO: muestra la tabla de motos con el nombre del dueño
 @app.route("/motos")
 @login_required
 def listarmotos():
+    q = request.args.get("q", "").strip()
     conexion = obtener_conexion()
     cursor = conexion.cursor(dictionary=True)
-    cursor.execute(
+    consulta = (
         "SELECT m.idmoto, m.marca, m.modelo, m.patente, c.nombre, c.apellido "
         "FROM motos m JOIN clientes c ON m.idcliente = c.idcliente "
-        "ORDER BY m.idmoto"
     )
+    if q:
+        patron = "%" + q + "%"
+        cursor.execute(
+            consulta +
+            "WHERE m.patente LIKE %s OR m.marca LIKE %s OR m.modelo LIKE %s "
+            "OR c.nombre LIKE %s OR c.apellido LIKE %s "
+            "OR CONCAT(c.nombre, ' ', c.apellido) LIKE %s "
+            "ORDER BY m.idmoto",
+            (patron, patron, patron, patron, patron, patron)
+        )
+    else:
+        cursor.execute(consulta + "ORDER BY m.idmoto")
     motos = cursor.fetchall()
     cursor.close()
     conexion.close()
-    return render_template("motos.html", motos=motos)
+    return render_template("motos.html", motos=motos, q=q)
 
 
 # 2. NUEVA: GET muestra el formulario, POST guarda
@@ -623,6 +638,49 @@ def eliminarservicio(idservicio):
     cursor.close()
     conexion.close()
     return render_template("servicio_eliminar.html", servicio=servicio)
+
+
+# ==========================================================
+# HISTORIAL DE SERVICIOS DE UNA MOTO
+# Pegar en app.py, antes de:  if __name__ == "__main__":
+# ==========================================================
+
+@app.route("/motos/historial/<int:idmoto>")
+@login_required
+def historialmoto(idmoto):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    # 1) Datos de la moto y de su dueño
+    cursor.execute(
+        "SELECT m.idmoto, m.marca, m.modelo, m.patente, c.nombre, c.apellido "
+        "FROM motos m JOIN clientes c ON m.idcliente = c.idcliente "
+        "WHERE m.idmoto = %s",
+        (idmoto,)
+    )
+    moto = cursor.fetchone()
+
+    if moto is None:
+        cursor.close()
+        conexion.close()
+        flash("Moto no encontrada", "error")
+        return redirect(url_for("listarmotos"))
+
+    # 2) Servicios de esa moto, del más nuevo al más viejo
+    cursor.execute(
+        "SELECT idservicio, fecha, descripcion, costo "
+        "FROM servicios WHERE idmoto = %s "
+        "ORDER BY fecha DESC, idservicio DESC",
+        (idmoto,)
+    )
+    servicios = cursor.fetchall()
+    cursor.close()
+    conexion.close()
+
+    # 3) Total gastado en la moto
+    total = sum(s["costo"] for s in servicios)
+
+    return render_template("historial_moto.html", moto=moto, servicios=servicios, total=total)
 
 
 

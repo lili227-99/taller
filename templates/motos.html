@@ -7,6 +7,12 @@
 
     <p><a href="{{ url_for('nuevamoto') }}">+ Nueva moto</a></p>
 
+        <form method="GET" action="{{ url_for('listarmotos') }}">
+        <input type="text" name="q" placeholder="Buscar por patente, marca, modelo o cliente" value="{{ q }}">
+        <button type="submit">Buscar</button>
+        {% if q %}<a href="{{ url_for('listarmotos') }}">Quitar filtro</a>{% endif %}
+    </form>
+
     <table border="1">
         <thead>
             <tr>
@@ -27,6 +33,7 @@
                 <td>{{ m.patente }}</td>
                 <td>{{ m.nombre }} {{ m.apellido }}</td>
                 <td>
+                    <a href="{{ url_for('historialmoto', idmoto=m.idmoto) }}">Historial</a>
                     <a href="{{ url_for('editarmoto', idmoto=m.idmoto) }}">Editar</a>
                     <a href="{{ url_for('eliminarmoto', idmoto=m.idmoto) }}">Eliminar</a>
                 </td>

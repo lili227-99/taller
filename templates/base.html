@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block titulo %}Taller de Motos{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
 </head>
 <body>
 
     <nav>
+        <a href="{{ url_for('inicio') }}">Inicio</a> 
         <a href="{{ url_for('listarclientes') }}">Clientes</a> 
         <a href="{{ url_for('listarmotos') }}">Motos</a> 
         <a href="{{ url_for('listarservicios') }}">Servicios</a>
